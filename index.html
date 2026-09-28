@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darsana Quest - MPI Fase F Kelas XI</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #090514 0%, #1e1b4b 40%, #3b0764 70%, #4c0519 100%);
+            --card-bg: rgba(255, 255, 255, 0.12);
+            --card-border: rgba(255, 255, 255, 0.2);
+            --primary-light: #d8b4fe;
+            --accent-blue: #38bdf8;
+            --accent-pink: #f472b6;
+            --text-light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(white 1px, transparent 0), radial-gradient(white 2px, transparent 0);
+            background-size: 40px 40px, 60px 60px;
+            background-position: 0 0, 20px 20px;
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Top Bar Dashboard */
+        .top-bar {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(15px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: none;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .screen {
+            display: none;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 35px 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--card-border);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mascot Floating Animation */
+        .mascot-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(56, 189, 248, 0.15);
+            border-left: 5px solid var(--accent-blue);
+            padding: 15px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            animation: floatMascot 4s ease-in-out infinite;
+        }
+
+        @keyframes floatMascot {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .mascot-avatar {
+            font-size: 2.8rem;
+            filter: drop-shadow(0 0 10px var(--accent-blue));
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--primary-light);
+            font-size: 0.95rem;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--card-border);
+            border-radius: 15px;
+            font-size: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.4);
+        }
+
+        .content-box {
+            background: rgba(0,0,0,0.3);
+            padding: 22px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #e2e8f0;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Grid Peta Sad Darsana */
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .map-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .map-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid var(--card-border);
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .map-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-pink);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 12px 25px rgba(236, 72, 153, 0.4);
+        }
+
+        .btn-secondary {
+            background: #475569;
+            box-shadow: none;
+            margin-top: 10px;
+        }
+
+        /* Quiz Options */
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--card-border);
+            border-radius: 14px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--white);
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-blue);
+        }
+
+        .quiz-option.correct {
+            background: rgba(34, 197, 94, 0.3) !important;
+            border-color: #22c55e !important;
+        }
+
+        .quiz-option.wrong {
+            background: rgba(239, 68, 68, 0.3) !important;
+            border-color: #ef4444 !important;
+        }
+
+        .dev-badge {
+            background: rgba(0,0,0,0.4);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR DASHBOARD -->
+    <div class="top-bar" id="topBar">
+        <div class="user-info">
+            <div class="avatar">🧙‍♂️</div>
+            <div>
+                <div id="displayNama" style="font-weight: bold; color: var(--primary-light);">Kelompok Penjelajah</div>
+                <div style="font-size: 0.75rem; color: #94a3b8;" id="displayStatus">Fase F - XI</div>
+            </div>
+        </div>
+        <div class="stats">
+            <div class="stat-box">🪙 <span id="valKoin">0</span></div>
+            <div class="stat-box">✨ <span id="valXP">0 XP</span></div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- SCREEN 1: BERANDA -->
+        <div class="screen active" id="screenBeranda">
+            <h1 style="text-align: center; color: var(--white); font-size: 2.2rem; margin-bottom: 5px; text-shadow: 0 0 15px rgba(168,85,247,0.6);">WEDA QUEST: DARSANA</h1>
+            <p style="text-align: center; color: var(--accent-blue); font-size: 0.95rem; margin-bottom: 25px; font-weight: bold;">Media Pembelajaran Interaktif Agama Hindu</p>
+
+            <div class="mascot-box">
+                <div class="mascot-avatar">🧙‍♂️</div>
+                <div>
+                    <strong>Maharsi Wyasa:</strong> "Selamat datang di Beranda Pengetahuan Darsana. Daftarkan identitas pembuat tugas kelompokmu di bawah ini!"
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nama Ketua / Anggota Kelompok</label>
+                <input type="text" id="inputNama" placeholder="Ketik nama-nama anggota kelompok...">
